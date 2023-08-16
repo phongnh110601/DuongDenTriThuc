@@ -1,8 +1,9 @@
 package com.example.backend.controller;
-import com.example.websocket.model.Question;
+import com.example.backend.model.Question;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/file")
 @CrossOrigin("*")
 public class QuestionController {
+
 
     @PostMapping("/upload")
     public ResponseEntity<List<Question>> getQuestionsFromExcelFile(@RequestParam("file") MultipartFile file){
@@ -33,16 +35,22 @@ public class QuestionController {
 
             for (Row row : sheet) {
                 String question = "", answer = "";
-                if (row.getCell(0).getCellType() == CellType.NUMERIC){
-                    question = String.valueOf(row.getCell(0).getNumericCellValue());
-                } else {
-                    question = row.getCell(0).getStringCellValue();
+                if (row.getCell(0) != null){
+                    if (row.getCell(0).getCellType() == CellType.NUMERIC){
+                        question = String.valueOf(row.getCell(0).getNumericCellValue());
+                    } else {
+                        question = row.getCell(0).getStringCellValue();
+                    }
                 }
-                if (row.getCell(1).getCellType() == CellType.NUMERIC){
-                    answer = String.valueOf(row.getCell(1).getNumericCellValue());
-                } else {
-                    answer = row.getCell(1).getStringCellValue();
+                if (row.getCell(1) != null){
+                    if (row.getCell(1).getCellType() == CellType.NUMERIC){
+                        answer = String.valueOf(row.getCell(1).getNumericCellValue());
+                    } else {
+                        answer = row.getCell(1).getStringCellValue();
+                    }
                 }
+                System.out.println(question);
+                System.out.println(answer);
                 questions.add(new Question(question, answer));
             }
             newFile.delete();

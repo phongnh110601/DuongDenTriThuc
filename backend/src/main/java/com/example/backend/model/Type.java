@@ -3,7 +3,9 @@ package com.example.backend.model;
 public enum Type {
     JOIN,
     QUESTION,
-    LEAVE,
+    DELETE,
+    START,
+    FINISH,
     COUNT,
     ANSWER,
     TIME,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import '../index.css'
@@ -11,7 +11,6 @@ export default function Admin() {
     const [file, setFile] = useState(null)
     const [ip, setIp] = useState('localhost')
     const [time, setTime] = useState(0)
-    const [currentUserName, setCurrentUserName] = useState('')
     const [index, setIndex] = useState(-1)
     const [users, setUsers] = useState([])
     const [questions, setQuestions] = useState([])
@@ -48,12 +47,12 @@ export default function Admin() {
         console.log(payloadData)
         if (payloadData.type === 'TIME') {
             setTime(payloadData.message)
-            setCurrentUserName(payloadData.senderName)
         }
         if (payloadData.type === 'JOIN' 
         || payloadData.type === 'TRUE' 
         || payloadData.type === 'FALSE'
-        || payloadData.type === 'ANSWER') {
+        || payloadData.type === 'ANSWER'
+        || payloadData.type === 'DELETE') {
             setUsers(JSON.parse(payloadData.message))
         }
     }
@@ -71,7 +70,7 @@ export default function Admin() {
                 type: type
             };
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-            setUserData({ ...userData, "message": "" });
+            setUserData({ ...userData, message: "" });
         }
     }
 
@@ -92,6 +91,14 @@ export default function Admin() {
         sendValue(questions[index + 1].question, 'QUESTION')
         setIndex(index + 1)
     }
+
+    const deleteUser = (name) => {
+        sendValue(name, 'DELETE')
+    }
+
+    const start = () => {
+        sendValue('', 'START')
+    }
     return userData.connected ?
         <div>
 
@@ -105,18 +112,20 @@ export default function Admin() {
             <h1>{time}</h1>
             <p>{questions[index]?.question}</p>
             <b>{questions[index]?.answer}</b>
-            <br />
+            <br/>
+            <button onClick={() => start()}>Start</button>
+            
             <div id='true-false-container'>
                 <button onClick={() => displayQuestion()}>Display</button>
                 <button onClick={() => sendValue('', 'COUNT')}>Time</button>
             </div>
             <div id='true-false-container'>
-                <button onClick={() => sendValue(currentUserName, 'TRUE')}>True</button>
-                <button onClick={() => sendValue(currentUserName, 'FALSE')}>False</button>
+                <button onClick={() => sendValue('', 'TRUE')}>True</button>
+                <button onClick={() => sendValue('', 'FALSE')}>False</button>
             </div>
             <div>
                 {users.map((user, index) => {
-                    return <ScoreItem user={user} key={index} />
+                    return <ScoreItem user={user} key={index}  deleteUser={deleteUser} isAdmin={true}/>
                 })}
             </div>
         </div>
@@ -130,11 +139,6 @@ export default function Admin() {
                 placeholder='Enter name:'
                 value={userData.name}
                 onChange={(e) => setUserData({ ...userData, name: e.target.value })} />
-            {/* <input
-                placeholder='Enter password'
-                type='password'
-                value={userData.password}
-                onChange={(e) => setUserData({ ...userData, password: e.target.value })} /> */}
 
             <button
                 onClick={() => connect()}>

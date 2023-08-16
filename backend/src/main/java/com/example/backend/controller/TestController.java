@@ -1,8 +1,8 @@
 package com.example.backend.controller;
 
-import com.example.websocket.model.Message;
-import com.example.websocket.model.Type;
-import com.example.websocket.model.User;
+import com.example.backend.model.Message;
+import com.example.backend.model.Type;
+import com.example.backend.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,6 +25,7 @@ public class TestController {
     private User currentUser;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
     @MessageMapping("/message")
     @SendTo("/test/public")
     public Message receiveMessage(@Payload Message message){
@@ -45,10 +46,10 @@ public class TestController {
                     currentUser = user;
                     System.out.println(user.getName() + " is answering");
                     message.setMessage(new ObjectMapper().writeValueAsString(users));
-                    message.setType(Type.ANSWER);
                     simpMessagingTemplate.convertAndSend("/test/public", message);
                     time = 3;
                     timer.cancel();
+                    timer = new Timer();
                     countdown(message);
                     isAllowAnswer = false;
                 } else {
@@ -60,34 +61,49 @@ public class TestController {
                 isAllowAnswer = true;
             }
             if (message.getType() == Type.TRUE){
-                timer.cancel();
-                currentUser.setScore(currentUser.getScore() + 10);
-                currentUser.setAnswering(false);
-                message.setMessage(new ObjectMapper().writeValueAsString(users));
+                if (currentUser != null){
+                    time = 3;
+                    timer.cancel();
+                    currentUser.setScore(currentUser.getScore() + 10);
+                    currentUser.setAnswering(false);
+                    message.setMessage(new ObjectMapper().writeValueAsString(users));
+
+                } else {
+                    return null;
+                }
             }
             if (message.getType() == Type.FALSE){
-                timer.cancel();
-                currentUser.setScore(currentUser.getScore() - 5);
-                currentUser.setAnswering(false);
-                message.setMessage(new ObjectMapper().writeValueAsString(users));
+                if (currentUser != null){
+                    time = 3;
+                    timer.cancel();
+                    currentUser.setScore(currentUser.getScore() - 5);
+                    currentUser.setAnswering(false);
+                    message.setMessage(new ObjectMapper().writeValueAsString(users));
+
+                } else {
+                    return null;
+                }
             }
             if (message.getType() == Type.COUNT){
                 if (isAllowAnswer){
                     time = 3;
-                    timer.cancel();
+                    timer = new Timer();
                     countdown(message);
                 }
             }
+            if (message.getType() == Type.DELETE){
+                deleteUser(message.getMessage());
+                message.setMessage(new ObjectMapper().writeValueAsString(users));
+            }
         } catch (Exception e){
-
+            System.out.println(e.getMessage());
         }
         return message;
     }
 
     private void countdown(Message message){
-        System.out.println("Start count");
-
-        timer = new Timer();
+        System.out.println("Start count down");
+        System.out.println("Time: " + time);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -113,6 +129,13 @@ public class TestController {
             }
         }
         return null;
+    }
+
+    private void deleteUser(String name){
+        User user = findUserByName(name);
+        if (user != null){
+            users.remove(user);
+        }
     }
 
 }
