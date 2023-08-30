@@ -77,7 +77,7 @@ export default function Admin() {
     const upload = () => {
         const formData = new FormData()
         formData.append('file', file)
-        fetch('http://' + ip + ':8080/file/upload', {
+        fetch('http://' + ip + ':8080/file/excel-upload', {
             method: 'post',
             body: formData
         }).then(res => res.json())
@@ -85,6 +85,17 @@ export default function Admin() {
                 setQuestions(data)
                 alert('Upload successfully!')
             })
+    }
+
+    const loadJSON = () => {
+        console.log(file)
+        var reader = new FileReader()
+        reader.onload = (event) => {
+            setQuestions(JSON.parse(event.target.result))
+            alert('Load successfully!')
+        }
+        reader.readAsText(file)
+        setIndex(-1)
     }
 
     const displayQuestion = () => {
@@ -108,6 +119,10 @@ export default function Admin() {
             <button
                 onClick={() => upload()}>
                 Upload
+            </button>
+            <button
+                onClick={() => loadJSON()}>
+                Load JSON
             </button>
             <h1>{time}</h1>
             <p>{questions[index]?.question}</p>

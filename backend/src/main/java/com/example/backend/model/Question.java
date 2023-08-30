@@ -10,4 +10,11 @@ import lombok.Setter;
 public class Question {
     private String question;
     private String answer;
+    private int score;
+    private String image;
+    private String audio;
+    private String video;
+    private int packageIndex;
+    private int index;
+    private QuestionType type;
 }

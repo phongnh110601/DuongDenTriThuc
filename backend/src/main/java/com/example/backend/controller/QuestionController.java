@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 import com.example.backend.model.Question;
+import com.example.backend.model.QuestionType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 public class QuestionController {
 
 
-    @PostMapping("/upload")
+    @PostMapping("/excel-upload")
     public ResponseEntity<List<Question>> getQuestionsFromExcelFile(@RequestParam("file") MultipartFile file){
         List<Question> questions = new ArrayList<>();
         try {
@@ -32,7 +33,7 @@ public class QuestionController {
             FileInputStream fileInputStream = new FileInputStream(newFile);
             Workbook workbook = new XSSFWorkbook(fileInputStream);
             Sheet sheet = workbook.getSheetAt(0);
-
+            int index = 0;
             for (Row row : sheet) {
                 String question = "", answer = "";
                 if (row.getCell(0) != null){
@@ -51,7 +52,7 @@ public class QuestionController {
                 }
                 System.out.println(question);
                 System.out.println(answer);
-                questions.add(new Question(question, answer));
+                questions.add(new Question(question, answer, 10, "", "", "", 1, index++, QuestionType.START));
             }
             newFile.delete();
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package com.example.backend.model;
 
-public enum Type {
+public enum MessageType {
     JOIN,
     QUESTION,
     DELETE,
@@ -9,6 +9,5 @@ public enum Type {
     COUNT,
     ANSWER,
     TIME,
-    TRUE,
-    FALSE
+    UPDATE
 }
