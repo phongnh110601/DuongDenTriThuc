@@ -2,27 +2,62 @@
     width: 100%;
     height: 100vh;
     background-image: url('../resource/image/background.png');
-    background-size: auto;
+    background-size: cover;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     color: white;
-    padding: 5%;
+    padding: 2% 2%;
 }
 
 .horizontal-container{
     width: 100%;
-    height: 50%;
-    display: flex;
-    margin-top: 20px;
-    
+    height: 48%;
+    display: flex;   
 }
 
 .image-container{
     flex: 4;
     height: 100%;
     min-height: 100%;
-    
+    position: relative;
+}
+
+.quarter{
+    border: solid 2px rgba(16, 124, 167, 0.596);
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    border: 2px solid gray;
+}
+
+.quarter__true{
+    display: none;
+}
+
+.quarter-1{
+    left: 0;
+    top: 0;
+}
+
+.quarter-2{
+    top: 0;
+    right: 0;
+}
+
+.quarter-3{
+    bottom: 0;
+    right: 0;
+}
+
+.quarter-4{
+    bottom: 0;
+    left: 0;
+}
+
+.quarter-5{
+    left: 25%;
+    top: 25%;
 }
 
 .obstacle-image{
@@ -35,23 +70,68 @@
     margin-left: 20px;
     flex: 6;
     min-height: 100%;
-    background-color: blue;
+    border: solid 8px rgba(16, 124, 167, 0.596);
     border-radius: 0px 30px 0px 0px;
     display: flex;
     flex-direction: column;
 }
 
-.crossword-container h2{
+.crossword-title{
     border-radius: 0px 30px 0px 30px;
     margin: 0px;
     padding: 10px;
-    background-color:darkturquoise;
     width: fit-content;
+    border: solid 4px rgba(16, 124, 167, 0.596);
     align-self: center;
 }
 
+.crossword{
+    width: 100%;
+    height: 20%;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.crossword h2{
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 4px rgba(16, 124, 167, 0.596);
+    border-radius: 10px;
+}
+
+.keyword-container{
+    display: flex;
+}
+
+.character{
+    background-color: white;
+    color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: solid 2px rgba(16, 124, 167, 0.596);
+    margin: 0px 2px;
+}
+
+.character__false{
+    background-color: gray;
+}
+
+.character__selected{
+    background-color: orange;
+}
+
 .obstacle-question-container{
-    background-color: blue;
+    border: solid 8px rgba(16, 124, 167, 0.596); 
     height: 100%;
     min-height: 100%;
     flex: 6;
@@ -64,7 +144,6 @@
 }
 
 .obstacle-time{
-    background-color: white;
     width: 80px;
     height: 80px;
     color: black;
@@ -76,6 +155,8 @@
     right: 20px;
     top: 20px;
     margin: 0px;
+    color: white;
+    border: solid 2px rgba(16, 124, 167, 0.596);
 }
 
 .answer-container{
@@ -95,7 +176,9 @@
     padding: 0px 10px;
     font-size: 1.25rem;
     flex: 1;
+    color: white;
     margin-right: 20px;
+    border: solid 2px rgba(16, 124, 167, 0.596);
 }
 
 .answer-container input:focus{
@@ -107,8 +190,7 @@
     width: 20%;
     min-width: 100px;
     margin-bottom: 30px;
-    background-color: green;
-    border: 0px;
+    border: solid 2px rgba(16, 124, 167, 0.596);
     color: white;
     font-size: 1rem;
     cursor: pointer;
@@ -116,7 +198,7 @@
 }
 
 .answer-container button:hover{
-    background-color:darkgreen;
+    background: rgb(2, 66, 83);
 }
 
 .obstacle-users-container{

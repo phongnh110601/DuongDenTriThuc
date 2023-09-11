@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
-import '../../style/start.css'
+import '../../style/admin.css'
 
 export default function StartRound(props) {
     var users = props.users
-    const [file, setFile] = useState(null)
-    const [questions, setQuestions] = useState([])
+
     const [index, setIndex] = useState(-1)
 
     useEffect(() => {
@@ -21,42 +20,17 @@ export default function StartRound(props) {
         props.sendMessage(JSON.stringify(users), 'UPDATE')
     }
 
-    const loadJSON = () => {
-        console.log(file)
-        var reader = new FileReader()
-        reader.onload = (event) => {
-            setQuestions(JSON.parse(event.target.result))
-            alert('Load successfully!')
-        }
-        reader.readAsText(file)
-        setIndex(-1)
-    }
-
-    const upload = () => {
-        const formData = new FormData()
-        formData.append('file', file)
-        fetch('http://' + props.ip + ':8080/file/excel-upload', {
-            method: 'post',
-            body: formData
-        }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-                setQuestions(data)
-                alert('Upload successfully!')
-            })
-    }
-
     const start = () => {
-        props.sendMessage('', 'START')
+        props.sendMessage('1', 'ROUND')
     }
 
     const previousQuestion = () => {
-        props.sendMessage(JSON.stringify(questions[index - 1]), 'QUESTION')
+        props.sendMessage(JSON.stringify(props.questions[index - 1]), 'QUESTION')
         setIndex(index - 1)
     }
 
     const nextQuestion = () => {
-        props.sendMessage(JSON.stringify(questions[index + 1]), 'QUESTION')
+        props.sendMessage(JSON.stringify(props.questions[index + 1]), 'QUESTION')
         setIndex(index + 1)
     }
 
@@ -94,21 +68,18 @@ export default function StartRound(props) {
         }
     }
 
+    const finish = () => {
+        props.sendMessage('0', 'ROUND')
+    }
+
     return <div>
-        <input
-            type='file'
-            onChange={(e) => setFile(e.target.files[0])} />
-        <button
-            className="admin-button"
-            onClick={() => upload()}>
-            Upload
-        </button>
+
         <h1>{props.time}</h1>
         <p>
-            Lượt {questions[index]?.packageIndex}: {questions[index]?.index}/{getTotalNumber(questions[index]?.packageIndex)}
+            Lượt {props.questions?.[index]?.packageIndex}: {props.questions?.[index]?.index}/{getTotalNumber(props.questions?.[index]?.packageIndex)}
         </p>
-        <h2>{questions[index]?.question}</h2>
-        <h2>{questions[index]?.answer}</h2>
+        <h2>{props.questions?.[index]?.question}</h2>
+        <h2>{props.questions?.[index]?.answer}</h2>
         <br />
         <button className="admin-button" onClick={() => previousQuestion()}>Previous</button>
         <input
@@ -120,22 +91,34 @@ export default function StartRound(props) {
         <br />
         <button className="admin-button" onClick={() => start()}>Start</button>
         <button className="admin-button" onClick={() => countDown()}>Count down</button>
+        <button className="admin-button" onClick={() => finish()}>Finish</button>
         <br />
         <button className="admin-button" onClick={() => trueAnswer()}>True</button>
         <button className="admin-button" onClick={() => falseAnswer()}>False</button>
-        {users.map((user, index) => {
-            return <div
-                style={{ display: "flex", width: "fit-content" }}
-                key={index}
-                className={user.answering ? "user-item__answer" : ""}>
-                <h1>{user.name}</h1>
-                <input
-                    style={{ fontSize: "2rem", width: "100px" }}
-                    onChange={(e) => user.score = e.target.value}
-                    defaultValue={user.score} />
-                <h1>{user.score}</h1>
-            </div>
-        })}
+        <table>
+            <thead>
+                <th>Họ tên</th>
+                <th>Điểm sửa</th>
+                <th>Điểm hiện tại</th>
+            </thead>
+            <tbody>
+                {users?.map((user, index) => {
+                    return <tr
+                        key={index}
+                        className={user.answering ? "admin-user-item user-item__answer" : "admin-user-item"}>
+                        <td><h3>{user.name}</h3></td>
+                        <td>
+                            <input
+                                style={{ fontSize: "1rem", width: "100px" }}
+                                defaultValue={user.score}
+                                onChange={(e) => { user.score = Number.parseInt(e.target.value) }} /></td>
+                        <td><h3>{user.score}</h3></td>
+                    </tr>
+                })}
+            </tbody>
+
+        </table>
+
         <button className="admin-button" onClick={() => updateUser()}>Update</button>
     </div>
 }

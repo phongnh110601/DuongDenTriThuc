@@ -1,0 +1,32 @@
+.waiting-page{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../resource/image/background.png');
+    background-size:cover;
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    padding: 5%;
+}
+
+.waiting-user-item{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.waiting-user-item img{
+    width: 100%;
+    border-radius: 10%;
+    aspect-ratio: 1;
+}
+
+.waiting-user-item h2{
+    font-size: 1.5rem;
+
+}
+
+.waiting-user-item h1{
+    font-size: 3.5rem;
+}

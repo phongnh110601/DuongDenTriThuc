@@ -1,0 +1,126 @@
+.finish-page{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../resource/image/background.png');
+    background-size: cover;
+    display: flex;
+    color: white;
+    padding: 2% 5%;
+}
+
+.finish-main{
+    border: solid 8px rgba(16, 124, 167, 0.596);
+    border-radius: 0px 0px 20px 20px;
+    width: calc(100% - 150px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.finish-right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.finish-users-container{
+    width: calc(100% + 4px);
+    display: flex;
+    height: 50px;
+}
+
+.finish-user-item{
+    display: flex;
+    margin: 0;
+    align-items: center;
+    padding-left: 20px;
+    width: 25%;
+    background: rgb(2, 46, 63);
+    border: solid 4px rgba(16, 124, 167, 0.596);
+    border-top: 0px;
+    border-left: 0px;
+}
+
+.finish-user-item__select{
+    border-bottom: 0px;
+    background-color: rgba(16, 124, 167, 0.596);
+}
+
+.finish-user-item__answer{
+    background-color: orange;
+}
+
+.finish-time{
+    color: white;
+    position: absolute;
+    right: 40px;
+    top: 80px;
+    margin: 0px;
+    width: 100px;
+    font-size: 3rem;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: solid 4px rgba(16, 124, 167, 0.596);
+}
+
+.finish-package{
+    width: calc(100% - 180px);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+
+.package-container{
+    display: flex;
+    border: solid 4px rgba(16, 124, 167, 0.596);
+    padding: 20px;
+    align-items: center;
+}
+
+.checkbox-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.checkbox-container input{
+    width: 30px;
+    height: 30px;
+}
+
+.finish-question-container{
+    width: calc(100% - 180px);
+    padding: 40px 0px 40px 40px;
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+}
+
+.finish-question-container h2{
+    margin: 0px;
+}
+
+.finish-answer-button{
+    height: 80px;
+    width: 20%;
+    min-width: 100px;
+    border: solid 4px rgba(16, 124, 167, 0.596);
+    color: white;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.finish-answer-button:hover{
+    background: rgb(2, 66, 83);
+}
+
+

@@ -1,3 +1,53 @@
-.player-page{
+.answer-board{
+    width: 100%;
+    height: 100vh;
+    background-image: url('../resource/image/background.png');
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    justify-content: space-between;
+    padding: 5%;
+}
 
+.answer-item{
+    width: 60%;
+    box-sizing: border-box;
+    height: 15%;
+    color: black;
+    margin: 10px;
+    position: relative;
+    border-radius: 0px 50px 0px 50px;
+    background: rgb(2, 46, 63);
+    border: solid 8px rgba(16, 124, 167, 0.596);
+    box-shadow: 1px 1px 3px black, 0 0 13px rgb(6, 95, 250), 0 0 7px white, 0 0 13px rgb(6, 95, 250);
+    color: white;
+    padding: 10px 20px;
+}
+
+.answer-item__false{
+    opacity: 0.5;
+}
+
+.answer-item div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.answer-item h1{
+    margin: 0;
+}
+
+.answer-item h2{
+    position: absolute;
+    top: calc(-100% - 4px);
+    left: -10px;
+    padding: 5px 20px;
+    width: 50%;
+    background: rgb(2, 46, 63);
+    border: solid 0px rgba(16, 124, 167, 0.596);
+    box-shadow: 1px 1px 3px black, 0 0 13px rgb(6, 95, 250), 0 0 7px white, 0 0 13px rgb(6, 95, 250);
 }
