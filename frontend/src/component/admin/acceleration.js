@@ -25,6 +25,8 @@ export default function AccelerationRound(props) {
         props.sendMessage(JSON.stringify(props.questions[index - 1]), 'QUESTION')
         setIndex(index - 1)
         users.map((user) => {
+            user.answer = ""
+            user.answerTime = 0
             user.correct = true
             user.selected = false
         })
@@ -35,6 +37,8 @@ export default function AccelerationRound(props) {
         props.sendMessage(JSON.stringify(props.questions[index + 1]), 'QUESTION')
         setIndex(index + 1)
         users.map((user) => {
+            user.answer = ""
+            user.answerTime = 0
             user.correct = true
             user.selected = false
         })
@@ -89,64 +93,68 @@ export default function AccelerationRound(props) {
             type="number"
             style={{ height: "60px", margin: "10px 10px", width: "80px" }} />
         <button className="admin-button" onClick={() => nextQuestion()}>Next</button>
-        <br/>
+        <br />
         <button className="admin-button" onClick={() => start()}>Start</button>
         <button className='admin-button' onClick={() => countDown()}>Count down</button>
         <button className="admin-button" onClick={() => finish()}>Finish</button>
         <table>
             <thead>
-                <th>Họ tên</th>
-                <th>Đáp án sửa</th>
-                <th>Đáp án hiện tại</th>
-                <th>Thời gian sửa</th>
-                <th>Thời gian trả lời</th>
-                <th>Điểm sửa</th>
-                <th>Điểm hiện tại</th>
-                <th>Trả lời đúng</th>
-                <th>Selected</th>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Đáp án sửa</th>
+                    <th>Đáp án hiện tại</th>
+                    <th>Thời gian sửa</th>
+                    <th>Thời gian trả lời</th>
+                    <th>Điểm sửa</th>
+                    <th>Điểm hiện tại</th>
+                    <th>Trả lời đúng</th>
+                    <th>Selected</th>
+                </tr>
             </thead>
+
             <tbody>
-            {users?.map((user, index) => {
-            return <tr
-                key={index}
-                className={user.answering ? "admin-user-item user-item__answer" : "admin-user-item"}>
-                <td><h3>{user.name}</h3></td>
-                <td>
-                <input
-                    onChange={(e) => user.answer = e.target.value}
-                    defaultValue={user.answer} />
-                </td>
-                <td><h3>{user.answer}</h3></td>
-                <td>
-                <input
-                    onChange={(e) => user.answerTime = e.target.value}
-                    defaultValue={user.answerTime} />
-                </td>
-                <td><h3>{user.answerTime}</h3></td>
-                <td>
-                <input
-                    onChange={(e) => user.score = e.target.value}
-                    defaultValue={user.score} />
-                </td>
-                <td><h3>{user.score}</h3></td>
-                <td>
-                <input
-                    type='checkbox'
-                    defaultChecked={user.selected}
-                    onChange={(e) => {
-                        user.selected = e.target.checked
-                    }} />
-                </td>
-                <td><h3>{user.selected.toString()}</h3></td>
-            </tr>
-        })}
+                {users?.map((user, index) => {
+                    return <tr
+                        key={index}
+                        className={user.answering ? "admin-user-item user-item__answer" : "admin-user-item"}>
+                        <td><h3>{user.name}</h3></td>
+                        <td>
+                            <input
+                                onChange={(e) => user.answer = e.target.value}
+                                defaultValue={user.answer} />
+                        </td>
+                        <td><h3>{user.answer}</h3></td>
+                        <td>
+                            <input
+                                onChange={(e) => user.answerTime = e.target.value}
+                                defaultValue={user.answerTime} />
+                        </td>
+                        <td><h3>{user.answerTime}</h3></td>
+                        <td>
+                            <input
+                                onChange={(e) => user.score = e.target.value}
+                                defaultValue={user.score} />
+                        </td>
+                        <td><h3>{user.score}</h3></td>
+                        <td>
+                            <input
+                                type='checkbox'
+                                defaultChecked={user.selected}
+                                onChange={(e) => {
+                                    user.selected = e.target.checked
+                                }} />
+                        </td>
+                        <td><h3>{user.selected.toString()}</h3></td>
+                    </tr>
+                })}
             </tbody>
+
 
         </table>
         <button className="admin-button" onClick={() => correctAcceleration()}>Đúng tăng tốc</button>
         <button className='admin-button' onClick={() => displayAnswer()}>Hiển thị câu trả lời</button>
         <button className='admin-button' onClick={() => displayAcceleration()}>Hiển thị câu hỏi</button>
-    
-        
+
+
     </div>
 }

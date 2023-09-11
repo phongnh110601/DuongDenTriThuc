@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import image from '../../resource/image/logo.png'
 import '../../style/finish.css'
 import FinishPackage from "./finishPackage"
+import star from '../../resource/image/Star.gif'
 
 
 export default function FinishRound(props) {
@@ -53,6 +54,11 @@ export default function FinishRound(props) {
                     </button>
             }
             <h1 className="finish-time shadow">{props.time}</h1>
+            {
+                props.choosingStar ?
+                <img src={star} className="star-image"/>
+                : null
+            }
         </div>
         <img src={image} className="logo shadow" />
 

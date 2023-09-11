@@ -123,4 +123,12 @@
     background: rgb(2, 66, 83);
 }
 
+.star-image{
+    position: absolute;
+    right: 0px;
+    top: 220px;
+    width: 200px;
+    height: 200px;
+}
+
 

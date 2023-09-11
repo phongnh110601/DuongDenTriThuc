@@ -11,5 +11,6 @@ public enum MessageType {
     TIME,
     UPDATE,
     PACKAGE,
-    CONFIRM
+    CONFIRM,
+    STAR
 }

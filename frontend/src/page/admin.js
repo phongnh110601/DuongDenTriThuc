@@ -44,7 +44,7 @@ export default function Player() {
     const onMessageReceived = (payload) => {
         var payloadData = JSON.parse(payload.body);
         console.log(payloadData)
-        
+
         if (payloadData.type === 'JOIN') {
             setUsers(JSON.parse(payloadData.message))
         }
@@ -63,7 +63,7 @@ export default function Player() {
         }
         if (round === 1) {
             startRound(payloadData)
-        } else if (round === 2){
+        } else if (round === 2) {
             obstacleRound(payloadData)
         } else if (round === 3) {
             accelerationRound(payloadData)
@@ -123,9 +123,9 @@ export default function Player() {
             method: 'post',
             body: formData
         }).then(res => res.json())
-        .then(data => {
-            alert('Upload successfully!')
-        })
+            .then(data => {
+                alert('Upload successfully!')
+            })
     }
 
     const updateUser = () => {
@@ -148,17 +148,20 @@ export default function Player() {
             onClick={() => uploadExcel()}>
             Upload Excel
         </button>
-        <button 
+        <button
             className='admin-button'
             onClick={() => uploadMedia()}>
             Upload Media
-            </button>
-            <table>
+        </button>
+        <table>
             <thead>
-                <th>Họ tên</th>
-                <th>Avatar sửa</th>
-                <th>Avatar hiện tại</th>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Avatar sửa</th>
+                    <th>Avatar hiện tại</th>
+                </tr>
             </thead>
+
             <tbody>
                 {users?.map((user, index) => {
                     return <tr
@@ -169,11 +172,12 @@ export default function Player() {
                             <input
                                 style={{ fontSize: "1rem", width: "100px" }}
                                 defaultValue={user.avatar}
-                                onChange={(e) => { user.avatar = e.target.value}} /></td>
+                                onChange={(e) => { user.avatar = e.target.value }} /></td>
                         <td><h3>{user.avatar}</h3></td>
                     </tr>
                 })}
             </tbody>
+
         </table>
         <button className="admin-button" onClick={() => updateUser()}>Update</button>
         <StartRound
@@ -191,11 +195,11 @@ export default function Player() {
             time={time}
             sendMessage={sendMessage}
             questions={accelerationQuestions}
-            users={users}/>
+            users={users} />
         <FinishRound
             time={time}
             sendMessage={sendMessage}
             questions={finishQuestions}
-            users={users}/>
+            users={users} />
     </div>
 }

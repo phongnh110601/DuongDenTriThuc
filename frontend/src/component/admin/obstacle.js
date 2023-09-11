@@ -9,7 +9,6 @@ export default function ObstacleRound(props) {
 
     useEffect(() => {
         users = props.users
-        console.log(props.obstacle)
         obstacle = props.obstacle
         return () => {
 
@@ -125,12 +124,14 @@ export default function ObstacleRound(props) {
 
         <table>
             <thead>
-                <th>Hàng ngang</th>
-                <th>Câu hỏi</th>
-                <th>Câu trả lời</th>
-                <th>Đang được chọn</th>
-                <th>Đã trả lời</th>
-                <th>Đúng</th>
+                <tr>
+                    <th>Hàng ngang</th>
+                    <th>Câu hỏi</th>
+                    <th>Câu trả lời</th>
+                    <th>Đang được chọn</th>
+                    <th>Đã trả lời</th>
+                    <th>Đúng</th>
+                </tr>
             </thead>
             <tbody>
                 {props.obstacle?.questions?.map((question, index) => {
@@ -149,13 +150,15 @@ export default function ObstacleRound(props) {
         </table>
         <table>
             <thead>
-                <th>Họ tên</th>
-                <th>Đáp án sửa</th>
-                <th>Đáp án hiện tại</th>
-                <th>Điểm sửa</th>
-                <th>Điểm hiện tại</th>
-                <th>Trả lời đúng</th>
-                <th>Selected</th>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Đáp án sửa</th>
+                    <th>Đáp án hiện tại</th>
+                    <th>Điểm sửa</th>
+                    <th>Điểm hiện tại</th>
+                    <th>Trả lời đúng</th>
+                    <th>Selected</th>
+                </tr>
             </thead>
             <tbody>
                 {users?.map((user, index) => {

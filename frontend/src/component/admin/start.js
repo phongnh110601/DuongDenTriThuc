@@ -97,10 +97,13 @@ export default function StartRound(props) {
         <button className="admin-button" onClick={() => falseAnswer()}>False</button>
         <table>
             <thead>
-                <th>Họ tên</th>
-                <th>Điểm sửa</th>
-                <th>Điểm hiện tại</th>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Điểm sửa</th>
+                    <th>Điểm hiện tại</th>
+                </tr>
             </thead>
+
             <tbody>
                 {users?.map((user, index) => {
                     return <tr
@@ -116,6 +119,7 @@ export default function StartRound(props) {
                     </tr>
                 })}
             </tbody>
+
 
         </table>
 

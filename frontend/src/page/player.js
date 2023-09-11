@@ -28,6 +28,7 @@ export default function Player() {
     const [playingVideo, setPlayingVideo] = useState(false)
     const [finishPackage, setFinishPackage] = useState([0, 0, 0, 0])
     const [isDisplayFinishPackage, setIsDisplayFinishPackage] = useState(false)
+    const [isChoosingStar, setIsChoosingStar] = useState(false)
     var round = 0
 
     const connect = () => {
@@ -140,6 +141,9 @@ export default function Player() {
         if (payloadData.type === 'QUESTION') {
             setFinishQuestion(JSON.parse(payloadData.message))
         }
+        if (payloadData.type === 'STAR') {
+            setIsChoosingStar(JSON.parse(payloadData.message))
+        }
     }
 
     const getElementByRound = (round) => {
@@ -191,7 +195,8 @@ export default function Player() {
                 ip={ip}
                 question={finishQuestion} 
                 finishPackage={finishPackage}
-                displayFinishPackage={isDisplayFinishPackage}/>
+                displayFinishPackage={isDisplayFinishPackage}
+                choosingStar={isChoosingStar}/>
         }
     }
 
