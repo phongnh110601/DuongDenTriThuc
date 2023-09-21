@@ -14,14 +14,12 @@ export default function ObstacleRound(props) {
                 answer: answer.toUpperCase(),
                 sessionId: props.sessionId
             }), 'ANSWER')
+            setAnswer('')
         }
     }
 
     const answerObstacle = () => {
-        props.sendMessage(JSON.stringify({
-            sessionId: props.sessionId,
-            answer: "obstacle"
-        }), 'ANSWER')
+        props.sendMessage(props.sessionId, 'ANSWER_OBSTACLE')
     }
 
     if (props.isDisplayAnswer) {
@@ -32,7 +30,7 @@ export default function ObstacleRound(props) {
                 <div className='image-container'>
                     <img
                         className='obstacle-image shadow'
-                        src={'http://' + props.ip + ':8080/' + props.obstacle.image} />
+                        src={'http://' + props.ip + ':8080/' + props.obstacle?.image} />
                     <div className={props.obstacle.questions?.[0].correct ? 'quarter__true' : 'quarter quarter-1 shadow'} />
                     <div className={props.obstacle.questions?.[1].correct ? 'quarter__true' : 'quarter quarter-2 shadow'} />
                     <div className={props.obstacle.questions?.[2].correct ? 'quarter__true' : 'quarter quarter-3 shadow'} />

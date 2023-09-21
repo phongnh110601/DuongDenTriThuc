@@ -32,7 +32,7 @@ export default function FinishRound(props) {
     }, [props.users, props.questions])
 
     const start = () => {
-        props.sendMessage('4', 'ROUND')
+        props.sendMessage('4', 'START')
     }
 
     const countDown = () => {
@@ -40,7 +40,7 @@ export default function FinishRound(props) {
     }
 
     const updateUser = () => {
-        props.sendMessage(JSON.stringify(users), 'UPDATE')
+        props.sendMessage(JSON.stringify(users), 'USER')
     }
 
     const updatePackage = (newFinishPackage) => {
@@ -74,14 +74,18 @@ export default function FinishRound(props) {
                         user.score += score
                     }
                 } else {
-                    user.score -= score;
+                    if (user.score < score) {
+                        user.score = 0
+                    } else {
+                        user.score -= score
+                    }
                 }
             } else if (user.answering) {
                 user.score += score;
             }
             user.answering = false
         })
-        updateUser()
+        props.sendMessage(JSON.stringify(users), 'TRUE')
     }
 
     const incorrectFinish = () => {
@@ -91,17 +95,33 @@ export default function FinishRound(props) {
         }
         users.map((user) => {
             if (user.answering && !user.selected) {
-                user.score -= score/2
+                if (user.score < score / 2) {
+                    user.score = 0
+                } else {
+                    user.score -= score / 2
+                }
             }
             user.answering = false
         })
-        updateUser()
+        props.sendMessage(JSON.stringify(users), 'FALSE')
     }
+
+    const finish = () => {
+        users.map((user) => {
+            user.selected = false
+            user.answer = ""
+            user.answerTime = 0
+            user.answering = false
+        })
+        props.sendMessage('', 'FINISH')
+    }
+
+
     return <div>
         <h1>{props.time}</h1>
         <button className="admin-button" onClick={() => start()}>Start</button>
         <button className="admin-button" onClick={() => countDown()}>Count down</button>
-        <button className="admin-button" onClick={() => { 
+        <button className="admin-button" onClick={() => {
             users?.map((user) => {
                 if (user.selected && isChoosingStar) {
                     user.score -= score
@@ -110,13 +130,15 @@ export default function FinishRound(props) {
             })
             updateUser()
             props.sendMessage('5', 'COUNT')
-         }}>Thời gian giành quyền</button>
+        }}>Thời gian giành quyền</button>
         <button className="admin-button" onClick={() => displayPackage()}>Chọn gói câu hỏi</button>
+        <button className="admin-button" onClick={() => finish()}>Finish</button>
         <br />
         20
         {finishPackage?.map((score, index) => {
             return <input
                 type="checkbox"
+                style={{width: "30px", height: "30px"}}
                 checked={score === 20}
                 key={index}
                 onChange={(e) => {
@@ -134,6 +156,7 @@ export default function FinishRound(props) {
         {finishPackage?.map((score, index) => {
             return <input
                 type="checkbox"
+                style={{width: "30px", height: "30px"}}
                 checked={score === 30}
                 key={index}
                 onChange={(e) => {
@@ -151,12 +174,20 @@ export default function FinishRound(props) {
         <button className="admin-button" onClick={() => correctFinish()}>True</button>
         <button className="admin-button" onClick={() => incorrectFinish()}>False</button>
         <button className="admin-button" onClick={() => star()}>Ngôi sao hy vọng</button>
+        <button className="admin-button" onClick={() => { props.sendMessage('', 'MEDIA') }}>Play media</button>
+        <button className="admin-button" onClick={() => {
+            users?.map((user) => {
+                user.selected = false
+            })
+            props.sendMessage(JSON.stringify(users), 'DESELECT_USER')
+        }}>Kết thúc lượt</button>
         <table>
             <thead>
                 <tr>
                     <th>Họ tên</th>
                     <th>Điểm sửa</th>
                     <th>Điểm hiện tại</th>
+                    <th>Selected</th>
                 </tr>
 
             </thead>
@@ -168,11 +199,14 @@ export default function FinishRound(props) {
                         <td>
                             <button className="admin-button"
                                 onClick={() => {
+                                    setFinishPackage([0, 0, 0, 0])
+                                    props.sendMessage(JSON.stringify([0, 0, 0, 0]), 'PACKAGE')
+                                    props.sendMessage(JSON.stringify({}), 'QUESTION')
                                     users?.map((user) => {
                                         user.selected = false
                                     })
                                     user.selected = true
-                                    updateUser()
+                                    props.sendMessage(JSON.stringify(users), 'SELECT_USER')
                                 }}>{user.name}</button>
                         </td>
                         <td>
@@ -181,12 +215,14 @@ export default function FinishRound(props) {
                                 defaultValue={user.score} />
                         </td>
                         <td><h3>{user.score}</h3></td>
+                        <td><h3>{user.selected.toString()}</h3></td>
                     </tr>
                 })}
             </tbody>
-
-
         </table>
+
+        <button className='admin-button' onClick={() => updateUser()}>Cập nhật điểm</button>
+        
         <table>
             <thead>
                 <tr>
@@ -230,8 +266,8 @@ export default function FinishRound(props) {
                 })}
             </tbody>
 
-
         </table>
+       
         <table>
             <thead>
                 <tr>

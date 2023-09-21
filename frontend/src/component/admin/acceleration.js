@@ -14,11 +14,11 @@ export default function AccelerationRound(props) {
     }, [props.users])
 
     const updateUser = () => {
-        props.sendMessage(JSON.stringify(users), 'UPDATE')
+        props.sendMessage(JSON.stringify(users), 'USER')
     }
 
     const start = () => {
-        props.sendMessage('3', 'ROUND')
+        props.sendMessage('3', 'START')
     }
 
     const previousQuestion = () => {
@@ -54,7 +54,7 @@ export default function AccelerationRound(props) {
         sortedUsers.sort((a, b) => {
             return a.answerTime - b.answerTime
         })
-        props.sendMessage(JSON.stringify(sortedUsers), 'UPDATE')
+        props.sendMessage(JSON.stringify(sortedUsers), 'USER')
         props.sendMessage(JSON.stringify(true), 'DISPLAY_ANSWER')
     }
 
@@ -65,7 +65,7 @@ export default function AccelerationRound(props) {
 
     const correctAcceleration = () => {
         let score = 40
-        users.map((user) => {
+        let countCorrectUsers = users.filter((user) => {
             if (user.selected) {
                 user.correct = true
                 user.score += score
@@ -73,12 +73,25 @@ export default function AccelerationRound(props) {
             } else {
                 user.correct = false
             }
-        })
-        updateUser()
+            return user.selected
+        }).length
+        if (countCorrectUsers > 0) {
+            props.sendMessage(JSON.stringify(users), 'TRUE')
+        } else {
+            props.sendMessage(JSON.stringify(users), 'FALSE')
+        }
     }
 
     const finish = () => {
-        props.sendMessage('0', 'ROUND')
+        users.map((user) => {
+            user.selected = false
+            user.answer = ""
+            user.answerTime = 0
+            user.answering = false
+            user.correct = true
+        })
+        updateUser()
+        props.sendMessage('', 'FINISH')
     }
 
     return <div>
@@ -96,6 +109,8 @@ export default function AccelerationRound(props) {
         <br />
         <button className="admin-button" onClick={() => start()}>Start</button>
         <button className='admin-button' onClick={() => countDown()}>Count down</button>
+        <button className='admin-button' onClick={() => displayAnswer()}>Hiển thị câu trả lời</button>
+        <button className='admin-button' onClick={() => displayAcceleration()}>Hiển thị câu hỏi</button>
         <button className="admin-button" onClick={() => finish()}>Finish</button>
         <table>
             <thead>
@@ -152,9 +167,6 @@ export default function AccelerationRound(props) {
 
         </table>
         <button className="admin-button" onClick={() => correctAcceleration()}>Đúng tăng tốc</button>
-        <button className='admin-button' onClick={() => displayAnswer()}>Hiển thị câu trả lời</button>
-        <button className='admin-button' onClick={() => displayAcceleration()}>Hiển thị câu hỏi</button>
-
-
+        <button className='admin-button' onClick={() => updateUser()}>Cập nhật điểm</button>
     </div>
 }

@@ -3,8 +3,8 @@ import AnswerItem from './answerItem'
 
 export default function answerBoard(props) {
     return <div className="answer-board">
-        {props.users.map((user) => {
-            return <AnswerItem user={user} />
+        {props.users.map((user, index) => {
+            return <AnswerItem user={user} key={index}/>
         })}
     </div>
 }

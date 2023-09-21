@@ -17,11 +17,11 @@ export default function StartRound(props) {
 
     const updateUser = () => {
         console.log(props.users)
-        props.sendMessage(JSON.stringify(users), 'UPDATE')
+        props.sendMessage(JSON.stringify(users), 'USER')
     }
 
     const start = () => {
-        props.sendMessage('1', 'ROUND')
+        props.sendMessage('1', 'START')
     }
 
     const previousQuestion = () => {
@@ -39,23 +39,11 @@ export default function StartRound(props) {
     }
 
     const trueAnswer = () => {
-        props.users.map((user) => {
-            if (user.answering) {
-                user.score += 10
-                user.answering = false
-            }
-        })
-        updateUser()
+        props.sendMessage('', 'TRUE')
     }
 
     const falseAnswer = () => {
-        props.users.map((user) => {
-            if (user.answering) {
-                user.score -= 5
-                user.answering = false
-            }
-        })
-        updateUser()
+        props.sendMessage('', 'FALSE')
     }
 
     const getTotalNumber = (packageIndex) => {
@@ -69,7 +57,7 @@ export default function StartRound(props) {
     }
 
     const finish = () => {
-        props.sendMessage('0', 'ROUND')
+        props.sendMessage('', 'FINISH')
     }
 
     return <div>

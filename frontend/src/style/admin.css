@@ -1,25 +1,32 @@
-.admin-button{
+.admin-button {
     padding: 20px 30px;
     margin: 10px 10px;
+    position: relative;
 }
 
-.admin-user-item{
-    /* display: flex;
-    width: 50%;
-    align-items: center; */
-}
-
-.admin-user-item h3{
+.admin-user-item h3 {
     margin: 0;
     flex: 7;
 }
 
-.admin-user-item input{
+.admin-user-item input {
     flex: 2;
     height: 50px;
 }
 
-table, td, tr, th{
+table,
+td,
+tr,
+th {
     border: 1px solid gray;
     border-collapse: collapse;
+}
+
+.file-input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
 }

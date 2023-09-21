@@ -16,12 +16,11 @@ export default function ObstacleRound(props) {
     }, [props.users, props.obstacle])
 
     const start = () => {
-        props.sendMessage('2', 'ROUND')
+        props.sendMessage('2', 'START')
         updateObstacleToClient()
     }
 
     const countDown = () => {
-        props.sendMessage('', 'QUESTION')
         props.sendMessage('', 'COUNT')
     }
 
@@ -41,7 +40,7 @@ export default function ObstacleRound(props) {
             }
         })
         updateUser()
-        updateObstacleToClient()
+        props.sendMessage(JSON.stringify(props.obstacle), 'QUESTION')
     }
 
     const correctCrossword = () => {
@@ -59,17 +58,17 @@ export default function ObstacleRound(props) {
         }).length
         if (countCorrectUser > 0) {
             obstacle.questions[currentCrossword].correct = true;
+            props.sendMessage(JSON.stringify(users), 'TRUE')
         } else {
             obstacle.questions[currentCrossword].correct = false;
+            props.sendMessage(JSON.stringify(users), 'FALSE')
         }
-        console.log(users)
         updateObstacleToClient()
-        updateUser()
     }
 
 
     const updateUser = () => {
-        props.sendMessage(JSON.stringify(users), 'UPDATE')
+        props.sendMessage(JSON.stringify(users), 'USER')
     }
 
     const displayAnswer = () => {
@@ -77,12 +76,19 @@ export default function ObstacleRound(props) {
         updateUser()
     }
 
+    const displayImage = () => {
+        props.sendMessage('', 'DISPLAY_IMAGE')
+    }
+
     const displayObstacle = () => {
         props.sendMessage(JSON.stringify(false), 'DISPLAY_ANSWER')
     }
 
     const reset = () => {
-        users.map((user) => user.answering = false)
+        users.map((user) => {
+            user.answering = false
+            user.answerIndex = 1
+        })
         updateUser()
     }
 
@@ -100,6 +106,7 @@ export default function ObstacleRound(props) {
             question.answered = true
             question.correct = true
         })
+        props.sendMessage('', 'TRUE_OBSTACLE')
         updateUser()
         updateObstacleToClient()
     }
@@ -109,7 +116,15 @@ export default function ObstacleRound(props) {
     }
 
     const finish = () => {
-        props.sendMessage('0', 'ROUND')
+        users.map((user) => {
+            user.selected = false
+            user.answer = ""
+            user.answerTime = 0
+            user.answering = false
+            user.correct = true
+        })
+        updateUser()
+        props.sendMessage('', 'FINISH')
     }
 
     return <div>
@@ -198,6 +213,7 @@ export default function ObstacleRound(props) {
         <button className='admin-button' onClick={() => correctObstacle()}>Đúng CNV</button>
         <button className='admin-button' onClick={() => updateUser()}>Cập nhật điểm</button>
         <button className='admin-button' onClick={() => displayAnswer()}>Hiển thị câu trả lời</button>
+        <button className='admin-button' onClick={() => displayImage()}>Hiển thị hình ảnh</button>
         <button className='admin-button' onClick={() => displayObstacle()}>Hiển thị CNV</button>
     </div>
 }

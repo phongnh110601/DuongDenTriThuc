@@ -18,6 +18,21 @@
     border-radius: 50%;
 }
 
+.question-image-container{
+    flex: 1;
+    width: calc((100% - 40px) * 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question-image{
+    height: auto;
+    max-height: 400px;
+    width: auto;
+    max-width: 600px;
+}
+
 .answer-button{
     height: 80px;
     width: 20%;

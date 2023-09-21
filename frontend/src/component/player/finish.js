@@ -1,13 +1,22 @@
-import { useEffect, useRef } from "react"
-import image from '../../resource/image/logo.png'
+import { useEffect, useRef, useState } from "react"
+import logo from '../../resource/image/logo.png'
 import '../../style/finish.css'
 import FinishPackage from "./finishPackage"
-import star from '../../resource/image/Star.gif'
-
+import star from '../../resource/image/star.gif'
 
 export default function FinishRound(props) {
 
     const videoRef = useRef(null)
+
+    useEffect(() => {
+        if (props.playingVideo && props.question.type === 'VIDEO') {
+            videoRef.current.play()
+        }
+
+        return () => {
+
+        }
+    }, [props.playingVideo])
 
     const answer = () => {
         props.sendMessage(props.sessionId, 'ANSWER');
@@ -40,13 +49,20 @@ export default function FinishRound(props) {
                     :
                     <div className="finish-question-container">
                         <h2>{props.question?.question}</h2>
+                        <video 
+                                onLoadedData={() => {alert('a')}}
+                                preload='auto'
+                                ref={videoRef} 
+                                src={'http://' + props.ip + ':8080/' + props.question?.video} 
+                                type="video/mp4"
+                                className={props.question?.type === 'VIDEO' ? '' : 'hide'}/>
                     </div>
             }
             {
                 props.isViewer
                     ?
                     null
-                    : 
+                    :
                     <button
                         className="finish-answer-button shadow"
                         onClick={() => answer()}>
@@ -56,11 +72,11 @@ export default function FinishRound(props) {
             <h1 className="finish-time shadow">{props.time}</h1>
             {
                 props.choosingStar ?
-                <img src={star} className="star-image"/>
-                : null
+                    <img src={star} className="star-image" />
+                    : null
             }
         </div>
-        <img src={image} className="logo shadow" />
+        <img src={logo} className="logo shadow" />
 
 
     </div>

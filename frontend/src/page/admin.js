@@ -6,12 +6,11 @@ import StartRound from '../component/admin/start';
 import ObstacleRound from '../component/admin/obstacle';
 import AccelerationRound from '../component/admin/acceleration';
 import FinishRound from '../component/admin/finish';
+import ExtraRound from '../component/admin/extra';
 
 var stompClient = null;
 export default function Player() {
 
-    var round = 0
-    const [roundState, setRoundState] = useState(0)
     const [ip, setIp] = useState('localhost')
     const [files, setFiles] = useState(null)
     const [startQuestions, setStartQuestions] = useState([])
@@ -21,7 +20,9 @@ export default function Player() {
     const [name, setName] = useState('host')
     const [time, setTime] = useState(0)
     const [users, setUsers] = useState([])
+    const [extraQuestions, setExtraQuestions] = useState([])
     const [isConnected, setIsConnected] = useState(false)
+    var round = 0
 
     const connect = () => {
         let socket = new SockJS('http://' + ip + ':8080/ws');
@@ -48,18 +49,20 @@ export default function Player() {
         if (payloadData.type === 'JOIN') {
             setUsers(JSON.parse(payloadData.message))
         }
-        if (payloadData.type === 'UPDATE') {
+        if (payloadData.type === 'USER') {
             setUsers(JSON.parse(payloadData.message))
         }
         if (payloadData.type === 'TIME') {
             setTime(payloadData.message)
         }
-        if (payloadData.type === 'ROUND') {
-            round = Number.parseInt(payloadData.message, 10)
-            setRoundState(round)
-        }
         if (payloadData.type === 'ANSWER') {
             setUsers(JSON.parse(payloadData.message))
+        }
+        if (payloadData.type === 'OBSTACLE') {
+            setObstacle(JSON.parse(payloadData.message))
+        }
+        if (payloadData.type === 'ROUND' || payloadData.type === 'START') {
+            round = Number.parseInt(payloadData.message, 10)
         }
         if (round === 1) {
             startRound(payloadData)
@@ -67,6 +70,35 @@ export default function Player() {
             obstacleRound(payloadData)
         } else if (round === 3) {
             accelerationRound(payloadData)
+        } else if (round === 4) {
+            finishRound(payloadData)
+        }
+    }
+
+    const startRound = (payloadData) => {
+        if (payloadData.type === 'TRUE' || payloadData.type === 'FALSE') {
+            setUsers(JSON.parse(payloadData.message))
+        }
+    }
+
+    const obstacleRound = (payloadData) => {
+        if (payloadData.type === 'TRUE' || payloadData.type === 'FALSE') {
+            setObstacle(JSON.parse(payloadData.message))
+        }
+        if (payloadData.type === 'ANSWER_OBSTACLE') {
+            setUsers(JSON.parse(payloadData.message))
+        }
+    }
+
+    const accelerationRound = (payloadData) => {
+        if (payloadData.type === 'TRUE' || payloadData.type === 'FALSE') {
+            setUsers(JSON.parse(payloadData.message))
+        }
+    }
+
+    const finishRound = (payloadData) => {
+        if (payloadData.type === 'TRUE' || payloadData.type === 'FALSE') {
+            setUsers(JSON.parse(payloadData.message))
         }
     }
 
@@ -78,22 +110,6 @@ export default function Player() {
             };
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
         }
-    }
-
-    const startRound = (payloadData) => {
-    }
-
-    const obstacleRound = (payloadData) => {
-        if (payloadData.type === 'OBSTACLE') {
-            setObstacle(JSON.parse(payloadData.message))
-        }
-    }
-
-    const accelerationRound = (payloadData) => {
-    }
-
-    const finishRound = (payloadData) => {
-
     }
 
     const uploadExcel = () => {
@@ -109,6 +125,7 @@ export default function Player() {
                 setObstacle(data.obstacle)
                 setAccelerationQuestions(data.accelerationQuestions)
                 setFinishQuestions(data.finishQuestions)
+                setExtraQuestions(data.extraQuestions)
                 alert('Upload successfully!')
             })
 
@@ -132,17 +149,22 @@ export default function Player() {
         sendMessage(JSON.stringify(users), 'UPDATE')
     }
 
-    return <div className='player-page'>
+    return <div className='admin-page'>
         <Connect
             ip={ip}
             setIp={setIp}
             name={name}
             setName={setName}
             connect={connect} />
-        <input
-            type='file'
-            multiple={true}
-            onChange={(e) => setFiles(e.target.files)} />
+        <button className='admin-button'>
+            <input
+                type='file'
+                className='file-input'
+                multiple={true}
+                onChange={(e) => setFiles(e.target.files)} />
+            Chọn file
+        </button>
+        <span>{files?.[0]?.name}</span>
         <button
             className="admin-button"
             onClick={() => uploadExcel()}>
@@ -151,8 +173,9 @@ export default function Player() {
         <button
             className='admin-button'
             onClick={() => uploadMedia()}>
-            Upload Media
+            Upload media
         </button>
+
         <table>
             <thead>
                 <tr>
@@ -174,6 +197,18 @@ export default function Player() {
                                 defaultValue={user.avatar}
                                 onChange={(e) => { user.avatar = e.target.value }} /></td>
                         <td><h3>{user.avatar}</h3></td>
+                        <td>
+                            <button 
+                                className='admin-button'
+                                onClick={() => {
+                                    let newUsers = users.filter((i) => {
+                                        return user.sessionId !== i.sessionId
+                                    })
+                                    sendMessage(JSON.stringify(newUsers), 'USER')
+                                }}>
+                                Delete
+                            </button>
+                        </td>
                     </tr>
                 })}
             </tbody>
@@ -200,6 +235,11 @@ export default function Player() {
             time={time}
             sendMessage={sendMessage}
             questions={finishQuestions}
+            users={users} />
+        <ExtraRound
+            questions={extraQuestions}
+            time={time}
+            sendMessage={sendMessage}
             users={users} />
     </div>
 }

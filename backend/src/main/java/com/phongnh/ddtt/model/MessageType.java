@@ -2,15 +2,25 @@ package com.phongnh.ddtt.model;
 
 public enum MessageType {
     JOIN,
-    QUESTION,
+    START,
     ROUND,
+    FINISH,
+    QUESTION,
     COUNT,
     ANSWER,
+    ANSWER_OBSTACLE,
+    TRUE,
+    FALSE,
     OBSTACLE,
     DISPLAY_ANSWER,
+    DISPLAY_IMAGE,
+    TRUE_OBSTACLE,
+    SELECT_USER,
+    DESELECT_USER,
     TIME,
-    UPDATE,
+    USER,
     PACKAGE,
     CONFIRM,
-    STAR
+    STAR,
+    MEDIA
 }

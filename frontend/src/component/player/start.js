@@ -1,7 +1,6 @@
 import UserItem from "./userItem"
 import "../../style/start.css"
-import { useState } from "react"
-import image from '../../resource/image/logo.png'
+import logo from '../../resource/image/logo.png'
 
 export default function StartRound(props) {
 
@@ -14,7 +13,7 @@ export default function StartRound(props) {
             return 8;
         } else if (packageIndex === 2) {
             return 12;
-        } else if (packageIndex === 3){
+        } else if (packageIndex === 3) {
             return 16;
         } else {
             return null
@@ -23,7 +22,10 @@ export default function StartRound(props) {
 
     return <div className="start-page">
 
-        <img src={image} className="logo shadow" />
+        <img src={logo} className="logo shadow" />
+        <div className="question-image-container">
+            <img src={props.question?.image} className="question-image" />
+        </div>
 
         <div className="index-container">
             <h2 className="index shadow">
@@ -33,7 +35,7 @@ export default function StartRound(props) {
                 props.isViewer
                     ?
                     null
-                    : 
+                    :
                     <button
                         className="answer-button shadow"
                         onClick={() => answer()}>
