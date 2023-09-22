@@ -48,7 +48,7 @@ export default function Player() {
     var finishIncorrectAudioRef = useRef(null)
     var finishStarAudioRef = useRef(null)
 
-    const [ip, setIp] = useState('192.168.16.107')
+    const [ip, setIp] = useState('localhost')
     const [name, setName] = useState('')
     const [sessionId, setSessionId] = useState('')
     const [users, setUsers] = useState([])
@@ -308,6 +308,9 @@ export default function Player() {
         }
         if (payloadData.type === 'DESELECT_USER') {
             finishFinishAudioRef.current.play()
+            finishFinishAudioRef.current.onplay = () => {
+                setUsers(JSON.parse(payloadData.message))
+            }
         }
         if (payloadData.type === 'PACKAGE') {
             setFinishPackage(JSON.parse(payloadData.message))
@@ -483,6 +486,8 @@ export default function Player() {
         <audio preload="auto" ref={finishStarAudioRef} src={'http://' + ip + ':8080/game/audio/finish_star.mp3'} />
         <audio preload="auto" ref={finishStartAudioRef} src={'http://' + ip + ':8080/game/audio/finish_start.mp3'} />
         <audio preload="auto" ref={summaryAudioRef} src={'http://' + ip + ':8080/game/audio/summary.mp3'} />
+        <audio preload="auto" ref={finishFinishAudioRef} src={'http://' + ip + ':8080/game/audio/finish_finish.mp3'} />
+        
         {
             isConnected ?
                 // isViewer || isFullScreen ?

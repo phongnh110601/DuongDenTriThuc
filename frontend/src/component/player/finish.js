@@ -8,6 +8,12 @@ export default function FinishRound(props) {
 
     const videoRef = useRef(null)
 
+    document.addEventListener("keydown", (e) => {
+        if (e.key === ' ') {
+            answer()
+        }
+    })
+
     useEffect(() => {
         if (props.playingVideo && props.question.type === 'VIDEO') {
             videoRef.current.play()
@@ -49,13 +55,12 @@ export default function FinishRound(props) {
                     :
                     <div className="finish-question-container">
                         <h2>{props.question?.question}</h2>
-                        <video 
-                                onLoadedData={() => {alert('a')}}
-                                preload='auto'
-                                ref={videoRef} 
-                                src={'http://' + props.ip + ':8080/' + props.question?.video} 
-                                type="video/mp4"
-                                className={props.question?.type === 'VIDEO' ? '' : 'hide'}/>
+                        <video
+                            preload='auto'
+                            ref={videoRef}
+                            src={'http://' + props.ip + ':8080/' + props.question?.video}
+                            type="video/mp4"
+                            className={props.question?.type === 'VIDEO' ? '' : 'hide'} />
                     </div>
             }
             {

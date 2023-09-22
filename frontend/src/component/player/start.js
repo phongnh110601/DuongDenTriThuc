@@ -8,6 +8,12 @@ export default function StartRound(props) {
         props.sendMessage(props.sessionId, 'ANSWER');
     }
 
+    document.addEventListener("keydown", (e) => {
+        if (e.key === ' ') {
+            answer()
+        }
+    })
+
     const getTotalNumber = (packageIndex) => {
         if (packageIndex === 1) {
             return 8;

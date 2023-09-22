@@ -274,7 +274,7 @@ public class Game {
     }
 
     public void addUser(String name, String sessionId) {
-        users.add(new User(name, 0, false, "", 0, sessionId, false, 1, false, "player/player" + (users.size() + 1) + ".png"));
+        users.add(new User(name, 0, false, "", 0, sessionId, false, 1, true, "player/player" + (users.size() + 1) + ".png"));
     }
 
     public void updateUsersToClient() {

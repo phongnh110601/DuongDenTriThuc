@@ -1,17 +1,17 @@
-.player-page{
+.player-page {
     height: 100vh;
     width: 100%;
     overflow: hidden;
 }
 
-.player{
+.player {
     z-index: 0;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.answer-board{
+.answer-board {
     width: 100%;
     height: 100vh;
     background-image: url('../resource/image/background.png');
@@ -20,16 +20,25 @@
     flex-direction: column;
     align-items: center;
     color: white;
-    justify-content: space-between;
     padding: 5%;
+    position: relative;
 }
 
-.answer-item{
+.answer-item-container{
+    height: 25%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    animation-duration: 2.5s;
+}
+
+.answer-item {
     width: 60%;
     box-sizing: border-box;
-    height: 15%;
-    color: black;
     margin: 10px;
+    height: 50%;
     position: relative;
     border-radius: 0px 50px 0px 50px;
     background: rgb(2, 46, 63);
@@ -37,26 +46,89 @@
     box-shadow: 1px 1px 3px black, 0 0 13px rgb(6, 95, 250), 0 0 7px white, 0 0 13px rgb(6, 95, 250);
     color: white;
     padding: 10px 20px;
+    
 }
 
-.answer-item__false{
+.answer-item__false {
     opacity: 0.5;
 }
 
-.answer-item div{
+.answer-item-0{
+    animation-name: answer-item-animation-0;
+    top: 0;
+}
+
+.answer-item-1{
+    animation-name: answer-item-animation-1;
+    top: 25%;
+}
+
+.answer-item-2{
+    animation-name: answer-item-animation-2;
+    top: 50%;
+}
+
+.answer-item-3{
+    animation-name: answer-item-animation-3;
+    top: 75%;
+}
+
+@keyframes answer-item-animation-0 {
+    0% {
+        top: -25%;
+    }
+
+    100% {
+        top: 0px;
+    }
+}
+
+@keyframes answer-item-animation-1 {
+    0% {
+        top: -25%;
+    }
+
+    100% {
+        top: 25%;
+    }
+}
+
+@keyframes answer-item-animation-2 {
+    0% {
+        top: -25%;
+    }
+
+    100% {
+        top: 50%;
+    }
+}
+
+
+@keyframes answer-item-animation-3 {
+    0% {
+        top: -25%;
+    }
+
+    100% {
+        top: 75%;
+    }
+}
+
+.answer-item div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
 }
 
-.answer-item h1{
+.answer-item h1 {
     margin: 0;
 }
 
-.answer-item h2{
+.answer-item h2 {
     position: absolute;
-    top: calc(-100% - 4px);
+    top: -50%;
+    margin: 0;
     left: -10px;
     padding: 5px 20px;
     width: 50%;
@@ -65,7 +137,7 @@
     box-shadow: 1px 1px 3px black, 0 0 13px rgb(6, 95, 250), 0 0 7px white, 0 0 13px rgb(6, 95, 250);
 }
 
-.fullscreen-button-container{
+.fullscreen-button-container {
     width: 100%;
     height: 100%;
     z-index: 1;

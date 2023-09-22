@@ -180,6 +180,7 @@ export default function FinishRound(props) {
                 user.selected = false
             })
             props.sendMessage(JSON.stringify(users), 'DESELECT_USER')
+            props.sendMessage(JSON.stringify({}), 'QUESTION')
         }}>Kết thúc lượt</button>
         <table>
             <thead>
