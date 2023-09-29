@@ -83,7 +83,7 @@ export default function Player() {
 
     const obstacleRound = (payloadData) => {
         if (payloadData.type === 'TRUE' || payloadData.type === 'FALSE') {
-            setObstacle(JSON.parse(payloadData.message))
+            setUsers(JSON.parse(payloadData.message))
         }
         if (payloadData.type === 'ANSWER_OBSTACLE') {
             setUsers(JSON.parse(payloadData.message))
@@ -121,11 +121,11 @@ export default function Player() {
         }).then(res => res.json())
             .then(data => {
                 console.log(data)
-                setStartQuestions(data.startQuestions)
-                setObstacle(data.obstacle)
-                setAccelerationQuestions(data.accelerationQuestions)
-                setFinishQuestions(data.finishQuestions)
-                setExtraQuestions(data.extraQuestions)
+                setStartQuestions(data?.startQuestions)
+                setObstacle(data?.obstacle)
+                setAccelerationQuestions(data?.accelerationQuestions)
+                setFinishQuestions(data?.finishQuestions)
+                setExtraQuestions(data?.extraQuestions)
                 alert('Upload successfully!')
             })
 
@@ -146,7 +146,7 @@ export default function Player() {
     }
 
     const updateUser = () => {
-        sendMessage(JSON.stringify(users), 'UPDATE')
+        sendMessage(JSON.stringify(users), 'USER')
     }
 
     return <div className='admin-page'>
@@ -190,15 +190,31 @@ export default function Player() {
                     return <tr
                         key={index}
                         className={user.answering ? "admin-user-item user-item__answer" : "admin-user-item"}>
-                        <td><h3>{user.name}</h3></td>
                         <td>
                             <input
-                                style={{ fontSize: "1rem", width: "100px" }}
-                                defaultValue={user.avatar}
-                                onChange={(e) => { user.avatar = e.target.value }} /></td>
-                        <td><h3>{user.avatar}</h3></td>
+                                style={{ fontSize: "1rem", width: "300px" }}
+                                value={user.name}
+                                onChange={(e) => {
+                                    let newUsers = [...users]
+                                    newUsers[index].name = e.target.value
+                                    setUsers(newUsers)
+                                }} 
+                            />
+                        </td>
                         <td>
-                            <button 
+                            <input
+                                style={{ fontSize: "1rem", width: "200px" }}
+                                defaultValue={user.avatar}
+                                onChange={(e) => {
+                                    let newUsers = [...users]
+                                    newUsers[index].avatar = e.target.value
+                                    setUsers(newUsers)
+                                }} 
+                            />
+                        </td>
+                        
+                        <td>
+                            <button
                                 className='admin-button'
                                 onClick={() => {
                                     let newUsers = users.filter((i) => {

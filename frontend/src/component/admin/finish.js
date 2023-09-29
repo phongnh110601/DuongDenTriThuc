@@ -231,6 +231,7 @@ export default function FinishRound(props) {
                     <th>Điểm</th>
                     <th>Câu hỏi</th>
                     <th>Câu trả lời</th>
+                    <th>Type</th>
                     <th>Đã được chọn</th>
                 </tr>
             </thead>
@@ -262,6 +263,7 @@ export default function FinishRound(props) {
                         <td>{question.score}</td>
                         <td>{question.question}</td>
                         <td>{question.answer}</td>
+                        <td>{question.type}</td>
                         <td><input type='checkbox' checked={question.selected} onChange={(e) => question.selected = e.target.checked} /></td>
                     </tr>
                 })}
@@ -276,6 +278,7 @@ export default function FinishRound(props) {
                     <th>Điểm</th>
                     <th>Câu hỏi</th>
                     <th>Câu trả lời</th>
+                    <th>Type</th>
                     <th>Đã được chọn</th>
                 </tr>
             </thead>
@@ -307,6 +310,7 @@ export default function FinishRound(props) {
                         <td>{question.score}</td>
                         <td>{question.question}</td>
                         <td>{question.answer}</td>
+                        <td>{question.type}</td>
                         <td><input type='checkbox' checked={question.selected} onChange={(e) => question.selected = e.target.checked} /></td>
                     </tr>
                 })}

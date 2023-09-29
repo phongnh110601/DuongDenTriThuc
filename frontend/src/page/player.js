@@ -48,7 +48,7 @@ export default function Player() {
     var finishIncorrectAudioRef = useRef(null)
     var finishStarAudioRef = useRef(null)
 
-    const [ip, setIp] = useState('localhost')
+    const [ip, setIp] = useState(window.location.hostname)
     const [name, setName] = useState('')
     const [sessionId, setSessionId] = useState('')
     const [users, setUsers] = useState([])

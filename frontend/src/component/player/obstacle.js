@@ -9,9 +9,9 @@ export default function ObstacleRound(props) {
     const [answer, setAnswer] = useState('')
 
     const handleKeyDown = (e) => {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
             props.sendMessage(JSON.stringify({
-                answer: answer.toUpperCase(),
+                answer: answer,
                 sessionId: props.sessionId
             }), 'ANSWER')
             setAnswer('')

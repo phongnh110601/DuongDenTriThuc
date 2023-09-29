@@ -66,6 +66,7 @@ public class QuestionController {
     private List<StartQuestion> getStartQuestions(Sheet sheet){
         List<StartQuestion> startQuestions = new ArrayList<>();
         for (int i = 1; i <= 36; i++) {
+            System.out.println(i);
             Row row = sheet.getRow(i);
             String question = row.getCell(0).getStringCellValue();
             String answer = row.getCell(1).getStringCellValue();

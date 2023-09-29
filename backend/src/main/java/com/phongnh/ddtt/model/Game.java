@@ -77,6 +77,7 @@ public class Game {
 
         } catch (Exception e) {
             System.out.println(e);
+            return null;
         }
         return message;
     }
@@ -125,7 +126,7 @@ public class Game {
             User sender = objectMapper.readValue(message.getMessage(), new TypeReference<User>(){});
             User user = findUserBySessionId(sender.getSessionId());
             if (!user.isAnswering() && isAllowAnswer){
-                user.setAnswer(sender.getAnswer());
+                user.setAnswer(sender.getAnswer().toUpperCase());
                 message.setMessage(objectMapper.writeValueAsString(users));
             } else {
                 return null;
@@ -160,23 +161,23 @@ public class Game {
                 long answerTime = System.nanoTime();
                 User sender = objectMapper.readValue(message.getMessage(), new TypeReference<User>(){});
                 User user = findUserBySessionId(sender.getSessionId());
-                user.setAnswer(sender.getAnswer());
+                user.setAnswer(sender.getAnswer().toUpperCase());
                 user.setAnswerTime((double) (answerTime - accelerationStartTime - 1000000000) / 1000000000);
                 message.setMessage(objectMapper.writeValueAsString(users));
             } else {
                 return null;
             }
-        }
-        if (message.getType() == MessageType.COUNT) {
+        } else if (message.getType() == MessageType.COUNT) {
             accelerationStartTime = System.nanoTime();
             isAllowAnswer = true;
             time = Integer.parseInt(message.getMessage());
             timer.cancel();
             timer = new Timer();
             countdown(message);
-        }
-        if (message.getType() == MessageType.TRUE || message.getType() == MessageType.FALSE){
+        } else if (message.getType() == MessageType.TRUE || message.getType() == MessageType.FALSE){
             users = objectMapper.readValue(message.getMessage(), new TypeReference<List<User>>(){});
+        } else if (message.getType() == MessageType.QUESTION){
+            isAllowAnswer = false;
         }
         return message;
     }
@@ -184,8 +185,7 @@ public class Game {
     private Message finishRound(Message message) throws JsonProcessingException {
         if (message.getType() == MessageType.QUESTION){
             isAllowAnswer = false;
-        }
-        if (message.getType() == MessageType.COUNT){
+        } else if (message.getType() == MessageType.COUNT){
             time = Integer.parseInt(message.getMessage());
             if (time == 5){
                 isAllowAnswer = true;
@@ -193,21 +193,18 @@ public class Game {
             timer.cancel();
             timer = new Timer();
             countdown(message);
-        }
-        if (message.getType() == MessageType.ANSWER){
-            if (isAllowAnswer){
+        } else if (message.getType() == MessageType.ANSWER){
+            User user = findUserBySessionId(message.getMessage());
+            if (isAllowAnswer && !user.isSelected()){
                 isAllowAnswer = false;
-                User user = findUserBySessionId(message.getMessage());
                 user.setAnswering(true);
                 message.setMessage(objectMapper.writeValueAsString(users));
             } else {
                 return null;
             }
-        }
-        if (message.getType() == MessageType.SELECT_USER || message.getType() == MessageType.DESELECT_USER){
+        } else if (message.getType() == MessageType.SELECT_USER || message.getType() == MessageType.DESELECT_USER){
             users = objectMapper.readValue(message.getMessage(), new TypeReference<List<User>>(){});
-        }
-        if (message.getType() == MessageType.TRUE || message.getType() == MessageType.FALSE){
+        } else if (message.getType() == MessageType.TRUE || message.getType() == MessageType.FALSE){
             users = objectMapper.readValue(message.getMessage(), new TypeReference<List<User>>(){});
         }
         return message;
@@ -224,7 +221,7 @@ public class Game {
                 return null;
             }
         } else if (message.getType() == MessageType.QUESTION) {
-            isAllowAnswer = true;
+            isAllowAnswer = false;
         } else if (message.getType() == MessageType.COUNT) {
             if (isAllowAnswer) {
                 time = 15;
